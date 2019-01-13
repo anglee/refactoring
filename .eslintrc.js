@@ -3,9 +3,10 @@ module.exports = {
   env: {
     node: true,
     es6: true,
+    "jest/globals": true,
   },
   plugins: ["jest"],
   parserOptions: {
-    "ecmaVersion": 9,
+    ecmaVersion: 9
   }
 };
