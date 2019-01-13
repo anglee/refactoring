@@ -1,11 +1,16 @@
 function statement(invoice, plays) {
+  const statementData = createStatementData(invoice, plays);
+  return renderPlainText(statementData);
+}
+
+function createStatementData(invoice, plays) {
   const statementData = {
     customer: invoice.customer,
     performances: invoice.performances.map(enrichPerformance)
   };
   statementData.totalAmount = totalAmount(statementData);
   statementData.totalVolumeCredits = totalVolumeCredits(statementData);
-  return renderPlainText(statementData);
+  return statementData;
 
   function enrichPerformance(aPerformance) {
     const result = { ...aPerformance };
