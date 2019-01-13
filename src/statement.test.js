@@ -1,9 +1,15 @@
-const statement = require("./statement");
+const { statement, htmlStatement } = require("./statement");
 const invoice = require("./data/invoice");
 const plays = require("./data/plays");
 
 describe("statement", () => {
-  it("prints statement with given invoice and plays", () => {
+  it("prints plain text statement with given invoice and plays", () => {
     expect(statement(invoice[0], plays)).toMatchSnapshot();
+  });
+});
+
+describe("htmlStatement", () => {
+  it("prints HTML statement with given invoice and plays", () => {
+    expect(htmlStatement(invoice[0], plays)).toMatchSnapshot();
   });
 });

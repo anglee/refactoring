@@ -1,6 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`statement prints statement with given invoice and plays 1`] = `
+exports[`htmlStatement prints HTML statement with given invoice and plays 1`] = `
+"<h1>Statement for BigCo</h1>
+<table>
+<tr><th>play</th><th>seats</th><th>cost</th></tr>  <tr><td>Hamlet</td><td>55</td><td>$65,000.00</td></tr>
+  <tr><td>As You Like It</td><td>35</td><td>$58,000.00</td></tr>
+  <tr><td>Othello</td><td>40</td><td>$50,000.00</td></tr>
+</table>
+<p>Amount owed is <em>$173,000.00</em></p>
+<p>You earned <em>47</em> credits</p>
+"
+`;
+
+exports[`statement prints plain text statement with given invoice and plays 1`] = `
 "Statement for BigCo
   Hamlet: $650.00 (55 seats)
   As You Like It: $580.00 (35 seats)
