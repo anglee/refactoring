@@ -4,5 +4,8 @@ module.exports = {
     node: true,
     es6: true,
   },
-  "plugins": ["jest"],
+  plugins: ["jest"],
+  parserOptions: {
+    "ecmaVersion": 9,
+  }
 };
