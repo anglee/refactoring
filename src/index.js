@@ -1,4 +1,4 @@
-const statement = require("./statement");
+const statement = require("./plainTextStatement");
 
 const invoice = require("./data/invoice");
 const plays = require("./data/plays");
