@@ -1,17 +1,14 @@
 function statement(invoice, plays) {
   let result = `Statement for ${invoice.customer}\n`;
 
-  let totalAmount = appleSauce();
-  let volumeCredits = totalVolumeCredits();
-
   for (let perf of invoice.performances) {
     // print line for this order
     result += `  ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${
       perf.audience
     } seats)\n`;
   }
-  result += `Amount owed is ${usd(totalAmount / 100)}\n`;
-  result += `You earned ${volumeCredits} credits\n`;
+  result += `Amount owed is ${usd(totalAmount() / 100)}\n`;
+  result += `You earned ${totalVolumeCredits()} credits\n`;
   return result;
 
   function amountFor(aPerformance) {
@@ -69,12 +66,12 @@ function statement(invoice, plays) {
     return result;
   }
 
-  function appleSauce() {
-    let totalAmount = 0;
+  function totalAmount() {
+    let result = 0;
     for (let perf of invoice.performances) {
-      totalAmount += amountFor(perf);
+      result += amountFor(perf);
     }
-    return totalAmount;
+    return result;
   }
 }
 
