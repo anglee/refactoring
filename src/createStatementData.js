@@ -1,3 +1,4 @@
+const PerformanceCalculator = require("./calculators/PerformanceCalculator");
 
 function createStatementData(invoice, plays) {
   const statementData = {};
@@ -12,6 +13,8 @@ function createStatementData(invoice, plays) {
   //==========================================================================
 
   function enrichPerformance(aPerformance) {
+    const calculator = new PerformanceCalculator(aPerformance);
+
     const result = { ...aPerformance };
     result.play = playFor(result);
     result.amount = amountFor(result);
