@@ -8,17 +8,8 @@ function statement(invoice, plays) {
     } seats)\n`;
   }
 
-  let totalAmount = 0;
-  for (let perf of invoice.performances) {
-    totalAmount += amountFor(perf);
-  }
-  result += `Amount owed is ${usd(totalAmount / 100)}\n`;
-
-  let volumeCredits = 0;
-  for (let perf of invoice.performances) {
-    volumeCredits += volumeCreditsFor(perf);
-  }
-  result += `You earned ${volumeCredits} credits\n`;
+  result += `Amount owed is ${usd(totalAmount() / 100)}\n`;
+  result += `You earned ${totalVolumeCredits()} credits\n`;
 
   return result;
 
@@ -72,6 +63,22 @@ function statement(invoice, plays) {
       currency: "USD",
       minimumFractionDigits: 2
     }).format(aNumber);
+  }
+
+  function totalAmount() {
+    let totalAmount = 0;
+    for (let perf of invoice.performances) {
+      totalAmount += amountFor(perf);
+    }
+    return totalAmount;
+  }
+
+  function totalVolumeCredits() {
+    let volumeCredits = 0;
+    for (let perf of invoice.performances) {
+      volumeCredits += volumeCreditsFor(perf);
+    }
+    return volumeCredits;
   }
 }
 
