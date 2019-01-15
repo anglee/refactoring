@@ -1,5 +1,9 @@
+const PerformanceCalculator = require("./PerformanceCalculator");
+
 function createStatementData(invoice, plays) {
   const performances = invoice.performances.map(performance => {
+    const calculator = new PerformanceCalculator(performance);
+
     const perf = { ...performance };
     perf.play = playFor(perf);
     perf.amount = amountFor(perf);
