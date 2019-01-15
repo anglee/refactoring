@@ -1,4 +1,5 @@
 const createStatementData = require("./createStatementData");
+const { usd } = require("./utils");
 
 function statement(invoice, plays) {
   const statementData = createStatementData(invoice, plays);
@@ -19,16 +20,6 @@ function renderPlainText(data) {
   result += `You earned ${data.totalVolumeCredits} credits\n`;
 
   return result;
-
-  //============================================================================
-
-  function usd(aNumber) {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2
-    }).format(aNumber);
-  }
 }
 
 module.exports = statement;
