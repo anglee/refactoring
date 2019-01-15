@@ -4,6 +4,8 @@ function statement(invoice, plays) {
   statementData.performances = invoice.performances.map(performance => {
     const perf = { ...performance };
     perf.play = playFor(perf);
+    perf.amount = amountFor(perf);
+    perf.volumeCredits = volumeCreditsFor(perf);
     return perf;
   });
 
@@ -13,24 +15,6 @@ function statement(invoice, plays) {
   function playFor(aPerformance) {
     return plays[aPerformance.playID];
   }
-}
-
-function renderPlainText(data) {
-  let result = `Statement for ${data.customer}\n`;
-
-  for (let perf of data.performances) {
-    // print line for this order
-    result += `  ${perf.play.name}: ${usd(amountFor(perf) / 100)} (${
-      perf.audience
-    } seats)\n`;
-  }
-
-  result += `Amount owed is ${usd(totalAmount() / 100)}\n`;
-  result += `You earned ${totalVolumeCredits()} credits\n`;
-
-  return result;
-
-  //============================================================================
 
   function amountFor(aPerformance) {
     let result = 0;
@@ -69,6 +53,24 @@ function renderPlainText(data) {
 
     return volumeCredits;
   }
+}
+
+function renderPlainText(data) {
+  let result = `Statement for ${data.customer}\n`;
+
+  for (let perf of data.performances) {
+    // print line for this order
+    result += `  ${perf.play.name}: ${usd(perf.amount / 100)} (${
+      perf.audience
+    } seats)\n`;
+  }
+
+  result += `Amount owed is ${usd(totalAmount() / 100)}\n`;
+  result += `You earned ${totalVolumeCredits()} credits\n`;
+
+  return result;
+
+  //============================================================================
 
   function usd(aNumber) {
     return new Intl.NumberFormat("en-US", {
@@ -81,7 +83,7 @@ function renderPlainText(data) {
   function totalAmount() {
     let totalAmount = 0;
     for (let perf of data.performances) {
-      totalAmount += amountFor(perf);
+      totalAmount += perf.amount;
     }
     return totalAmount;
   }
@@ -89,7 +91,7 @@ function renderPlainText(data) {
   function totalVolumeCredits() {
     let volumeCredits = 0;
     for (let perf of data.performances) {
-      volumeCredits += volumeCreditsFor(perf);
+      volumeCredits += perf.volumeCredits;
     }
     return volumeCredits;
   }
