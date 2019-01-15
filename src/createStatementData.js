@@ -1,11 +1,11 @@
-const PerformanceCalculator = require("./PerformanceCalculator");
+const createCalculator = require("./calculator/createCalculator");
 
 function createStatementData(invoice, plays) {
   const performances = invoice.performances.map(performance => {
     const perf = { ...performance };
     perf.play = playFor(perf);
 
-    const calculator = new PerformanceCalculator(perf);
+    const calculator = createCalculator(perf);
     perf.amount = calculator.amount;
     perf.volumeCredits = calculator.volumeCredits;
     return perf;
