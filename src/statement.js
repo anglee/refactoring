@@ -11,6 +11,7 @@ function statement(invoice, plays) {
     return perf;
   });
   statementData.totalAmount = totalAmount(statementData.performances);
+  statementData.totalVolumeCredits = totalVolumeCredits(statementData.performances);
   return renderPlainText(statementData);
 
   //=========================================================
@@ -60,6 +61,14 @@ function statement(invoice, plays) {
     }
     return totalAmount;
   }
+
+  function totalVolumeCredits(performances) {
+    let volumeCredits = 0;
+    for (let perf of performances) {
+      volumeCredits += perf.volumeCredits;
+    }
+    return volumeCredits;
+  }
 }
 
 function renderPlainText(data) {
@@ -73,18 +82,8 @@ function renderPlainText(data) {
   }
 
   result += `Amount owed is ${usd(data.totalAmount / 100)}\n`;
-  result += `You earned ${totalVolumeCredits()} credits\n`;
+  result += `You earned ${data.totalVolumeCredits} credits\n`;
   return result;
-
-  //=========================================================
-
-  function totalVolumeCredits() {
-    let volumeCredits = 0;
-    for (let perf of data.performances) {
-      volumeCredits += perf.volumeCredits;
-    }
-    return volumeCredits;
-  }
 }
 
 module.exports = statement;
