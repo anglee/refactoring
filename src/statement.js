@@ -6,12 +6,7 @@ function statement(invoice, plays) {
   let result = `Statement for ${invoice.customer}\n`;
 
   for (let perf of invoice.performances) {
-    // add volume credits
-    volumeCredits += Math.max(perf.audience - 30, 0);
-    // add extra credit for every ten comedy attendees
-    if ("comedy" === playFor(perf).type) {
-      volumeCredits += Math.floor(perf.audience / 5);
-    }
+    volumeCredits += volumeCreditsFor(perf);
 
     // print line for this order
     result += `  ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${
@@ -50,6 +45,17 @@ function statement(invoice, plays) {
 
   function playFor(perf) {
     return plays[perf.playID];
+  }
+
+  function volumeCreditsFor(perf) {
+    let result = 0;
+    // add volume credits
+    result += Math.max(perf.audience - 30, 0);
+    // add extra credit for every ten comedy attendees
+    if ("comedy" === playFor(perf).type) {
+      result += Math.floor(perf.audience / 5);
+    }
+    return result;
   }
 }
 
