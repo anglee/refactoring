@@ -1,6 +1,11 @@
 const usd = require("./utils/usd");
 
 function statement(invoice, plays) {
+  const statementData = createStatementData(invoice, plays);
+  return renderPlainText(statementData);
+}
+
+function createStatementData(invoice, plays) {
   const statementData = {};
   statementData.customer = invoice.customer;
   statementData.performances = invoice.performances.map(p => {
@@ -12,7 +17,7 @@ function statement(invoice, plays) {
   });
   statementData.totalAmount = totalAmount(statementData.performances);
   statementData.totalVolumeCredits = totalVolumeCredits(statementData.performances);
-  return renderPlainText(statementData);
+  return statementData;
 
   //=========================================================
 
