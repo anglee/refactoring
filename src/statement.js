@@ -3,16 +3,26 @@ const usd = require("./utils/usd");
 function statement(invoice, plays) {
   const statementData = {};
   statementData.customer = invoice.customer;
-  statementData.performances = invoice.performances;
-  return renderPlainText(statementData, plays);
+  statementData.performances = invoice.performances.map(p => {
+    const perf = {...p};
+    perf.play = playFor(perf);
+    return perf;
+  });
+  return renderPlainText(statementData);
+
+  //=========================================================
+
+  function playFor(perf) {
+    return plays[perf.playID];
+  }
 }
 
-function renderPlainText(data, plays) {
+function renderPlainText(data) {
   let result = `Statement for ${data.customer}\n`;
 
   for (let perf of data.performances) {
     // print line for this order
-    result += `  ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${
+    result += `  ${perf.play.name}: ${usd(amountFor(perf) / 100)} (${
       perf.audience
     } seats)\n`;
   }
@@ -26,7 +36,7 @@ function renderPlainText(data, plays) {
   function amountFor(perf) {
     let result = 0;
 
-    switch (playFor(perf).type) {
+    switch (perf.play.type) {
       case "tragedy":
         result = 40000;
         if (perf.audience > 30) {
@@ -41,13 +51,9 @@ function renderPlainText(data, plays) {
         result += 300 * perf.audience;
         break;
       default:
-        throw new Error(`unknown type: ${playFor(perf).type}`);
+        throw new Error(`unknown type: ${perf.play.type}`);
     }
     return result;
-  }
-
-  function playFor(perf) {
-    return plays[perf.playID];
   }
 
   function volumeCreditsFor(perf) {
@@ -55,7 +61,7 @@ function renderPlainText(data, plays) {
     // add volume credits
     result += Math.max(perf.audience - 30, 0);
     // add extra credit for every ten comedy attendees
-    if ("comedy" === playFor(perf).type) {
+    if ("comedy" === perf.play.type) {
       result += Math.floor(perf.audience / 5);
     }
     return result;
