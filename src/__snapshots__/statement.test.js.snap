@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`statement prints statement with given invoice and plays 1`] = `
+exports[`statement prints plain-text statement with given invoice and plays 1`] = `
 "Statement for BigCo
   Hamlet: $650.00 (55 seats)
   As You Like It: $580.00 (35 seats)
