@@ -1,13 +1,14 @@
 const usd = require("./utils/usd");
 function statement(invoice, plays) {
-  const statementData = {
-    customer: invoice.customer,
-    performances: invoice.performances.map(p => {
-      const perf = { ...p };
-      perf.play = playFor(perf);
-      return perf;
-    }),
-  };
+  const statementData = {};
+  statementData.customer = invoice.customer;
+  statementData.performances = invoice.performances.map(p => {
+    const perf = { ...p };
+    perf.play = playFor(perf);
+    perf.amount = amountFor(perf);
+    perf.volumeCredits = volumeCreditsFor(perf);
+    return perf;
+  });
   return renderPlainText(statementData);
 
   //=========================================================
@@ -15,22 +16,6 @@ function statement(invoice, plays) {
   function playFor(perf) {
     return plays[perf.playID];
   }
-}
-
-function renderPlainText(data) {
-  let result = `Statement for ${data.customer}\n`;
-
-  for (let perf of data.performances) {
-    result += `  ${perf.play.name}: ${usd(amountFor(perf) / 100)} (${
-      perf.audience
-    } seats)\n`;
-  }
-
-  result += `Amount owed is ${usd(totalAmount() / 100)}\n`;
-  result += `You earned ${totalVolumeCredits()} credits\n`;
-  return result;
-
-  //=========================================================
 
   function amountFor(perf) {
     let result = 0;
@@ -66,11 +51,27 @@ function renderPlainText(data) {
     }
     return result;
   }
+}
+
+function renderPlainText(data) {
+  let result = `Statement for ${data.customer}\n`;
+
+  for (let perf of data.performances) {
+    result += `  ${perf.play.name}: ${usd(perf.amount / 100)} (${
+      perf.audience
+    } seats)\n`;
+  }
+
+  result += `Amount owed is ${usd(totalAmount() / 100)}\n`;
+  result += `You earned ${totalVolumeCredits()} credits\n`;
+  return result;
+
+  //=========================================================
 
   function totalAmount() {
     let totalAmount = 0;
     for (let perf of data.performances) {
-      totalAmount += amountFor(perf);
+      totalAmount += perf.amount;
     }
     return totalAmount;
   }
@@ -78,7 +79,7 @@ function renderPlainText(data) {
   function totalVolumeCredits() {
     let volumeCredits = 0;
     for (let perf of data.performances) {
-      volumeCredits += volumeCreditsFor(perf);
+      volumeCredits += perf.volumeCredits;
     }
     return volumeCredits;
   }
