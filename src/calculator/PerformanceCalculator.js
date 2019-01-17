@@ -1,5 +1,5 @@
 class PerformanceCalculator {
-  constructor (aPerformance) {
+  constructor(aPerformance) {
     this.performance = aPerformance;
   }
 

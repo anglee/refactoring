@@ -6,7 +6,7 @@ function statement(invoice, plays) {
   return renderHtml(statementData);
 }
 
-function renderHtml (data) {
+function renderHtml(data) {
   let result = `<h1>Statement for ${data.customer}</h1>\n`;
   result += "<table>\n";
   result += "<tr><th>play</th><th>seats</th><th>cost</th></tr>";

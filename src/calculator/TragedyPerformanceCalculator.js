@@ -1,7 +1,7 @@
-const PerformanceCalculator = require("./PerformanceCalculator")
+const PerformanceCalculator = require("./PerformanceCalculator");
 
 class ComedyPerformanceCalculator extends PerformanceCalculator {
-  constructor (aPerformance) {
+  constructor(aPerformance) {
     super(aPerformance);
   }
 
