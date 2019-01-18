@@ -1,7 +1,12 @@
 const usd = require("./utils/usd");
 
-function statement(invoice, plays) {
 
+function statement(invoice, plays) {
+  const statementData = createStatementData(invoice, plays);
+  return renderPlainText(statementData);
+}
+
+function createStatementData(invoice, plays) {
   const statementData = {};
 
   statementData.customer = invoice.customer;
@@ -15,14 +20,14 @@ function statement(invoice, plays) {
 
   statementData.totalAmount = totalAmount(statementData.performances);
   statementData.totalVolumeCredits = totalVolumeCredits(statementData.performances);
-
-  return renderPlainText(statementData);
+  return statementData;
 
   //=========================================================
 
   function playFor(perf) {
     return plays[perf.playID];
   }
+
   function amountFor(perf) {
     let ret = 0;
 
@@ -46,6 +51,7 @@ function statement(invoice, plays) {
 
     return ret;
   }
+
   function volumeCreditsFor(perf) {
     let ret = 0;
 
@@ -58,9 +64,11 @@ function statement(invoice, plays) {
 
     return ret;
   }
+
   function totalAmount(performances) {
     return performances.reduce((total, perf) => total + perf.amount, 0);
   }
+
   function totalVolumeCredits(performances) {
     return performances.reduce((total, perf) => total + perf.volumeCredits, 0);
   }
