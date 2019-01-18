@@ -1,14 +1,8 @@
 const usd = require("./utils/usd");
 
 function statement(invoice, plays) {
-  let totalAmount = 0;
-  let volumeCredits = 0;
+
   let result = `Statement for ${invoice.customer}\n`;
-
-  for (let perf of invoice.performances) {
-    volumeCredits += volumeCreditsFor(perf);
-  }
-
   for (let perf of invoice.performances) {
     // print line for this order
     result += `  ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${
@@ -16,6 +10,12 @@ function statement(invoice, plays) {
       } seats)\n`;
   }
 
+  let volumeCredits = 0;
+  for (let perf of invoice.performances) {
+    volumeCredits += volumeCreditsFor(perf);
+  }
+
+  let totalAmount = 0;
   for (let perf of invoice.performances) {
     totalAmount += amountFor(perf);
   }
